@@ -1,33 +1,35 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { IM_Fell_French_Canon, Raleway } from "next/font/google";
 import "./globals.css";
 import Lenis from '@/libs/Lenis';
 import GSAP from '@/libs/GSAP';
 import Cursor from '@/libs/Cursor';
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const imFellFrenchCanon = IM_Fell_French_Canon({
+  variable: "--font-title",
   subsets: ["latin"],
+  weight: ["400"], // poids standard
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const raleway = Raleway({
+  variable: "--font-text",
   subsets: ["latin"],
+  weight: ["400"], // poids standard
 });
 
 export const metadata = {
-  title: "Metropolitan",
-  description: "Museum of Contemporary Art",
+  title: "Ophelia Museum",
+  description: "Museum of arts",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-      <Lenis>
-        <GSAP />
-        {children}
-        <Cursor />
-      </Lenis>
+      <body className={`${imFellFrenchCanon.variable} ${raleway.variable} antialiased`}>
+        <Lenis>
+          <GSAP />
+          {children}
+          <Cursor />
+        </Lenis>
       </body>
     </html>
   );

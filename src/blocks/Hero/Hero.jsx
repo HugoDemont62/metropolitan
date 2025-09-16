@@ -1,3 +1,9 @@
 export default function Hero() {
-  return <section>Hero</section>
+    return (
+        <section>
+          <h1 className="text-9xl">
+            Hero
+          </h1>
+        </section>
+    );
 }
