@@ -3,5 +3,6 @@ export async function getAllPaints() {
   if (!res.ok) {
     throw new Error('Erreur lors de la récupération des peintures');
   }
-  return await res.json();
+  const data = await res.json();
+  return data.objects;
 }
