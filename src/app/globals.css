@@ -6,7 +6,7 @@
 :root {
     --font-title: 'IM Fell French Canon', serif;
     --font-text: 'Raleway', sans-serif;
-    font-family: var(--font-title);
+    font-family: var(--font-title), serif;
     --radius: 0.625rem;
     --background: oklch(1 0 0);
     --foreground: oklch(0.145 0 0);
