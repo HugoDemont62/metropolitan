@@ -3,6 +3,8 @@ import './globals.css';
 import Lenis from '@/libs/Lenis';
 import GSAP from '@/libs/GSAP';
 import Cursor from '@/libs/Cursor';
+import Transition from '@/libs/transition';
+import Preloader from '@/libs/preloader';
 
 const imFellFrenchCanon = IM_Fell_French_Canon({
   variable: '--font-title',
@@ -24,13 +26,16 @@ export const metadata = {
 export default function RootLayout({children}) {
   return (
     <html lang="en">
-    <body
-      className={`${imFellFrenchCanon.variable} ${raleway.variable} antialiased`}>
-    <Lenis>
-      <GSAP/>
-      {children}
-      <Cursor/>
-    </Lenis>
+    <body className={`${imFellFrenchCanon.variable} ${raleway.variable} antialiased`}>
+    <Preloader>
+    <Transition>
+      <Lenis>
+        <GSAP/>
+        {children}
+        <Cursor/>
+      </Lenis>
+    </Transition>
+    </Preloader>
     </body>
     </html>
   );

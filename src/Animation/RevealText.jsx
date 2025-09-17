@@ -6,7 +6,7 @@ import gsap from 'gsap';
 import {SplitText} from 'gsap/SplitText';
 import {useGSAP} from '@gsap/react';
 
-export default function Copy({
+export default function RevealText({
                                children,
                                animateOnScroll = true,
                                delay = 0,

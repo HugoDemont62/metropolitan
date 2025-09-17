@@ -1,23 +1,24 @@
 import {Input} from '@/components/ui/input';
 import {Search} from 'lucide-react';
+import TransitionLink from '@/Animation/TransitionLink';
 
 export default function Header() {
   return (
     <header className="w-full py-4 px-6 flex items-center justify-between">
       {/* Logo */}
-      <a href="/" className="font-serif leading-none">
+      <TransitionLink href="/" className="font-serif leading-none">
         <h1 className="text-2xl tracking-wider mb-[-10px]">OPHELIA</h1>
         <h2 className="text-xl tracking-wide"><i>Museum</i></h2>
-      </a>
+      </TransitionLink>
 
       {/* Navigation */}
       <nav className="flex space-x-6 text-sm font-medium">
-        <a href="/paints" className="hover:text-gray-600 transition-colors">
+        <TransitionLink href="/paints" className="hover:text-gray-600 transition-colors">
           Peintures
-        </a>
-        <a href="/billetteries" className="hover:text-gray-600 transition-colors">
+        </TransitionLink>
+        <TransitionLink href="/billetteries" className="hover:text-gray-600 transition-colors">
           Billetteries
-        </a>
+        </TransitionLink>
       </nav>
 
       {/* Recherche */}

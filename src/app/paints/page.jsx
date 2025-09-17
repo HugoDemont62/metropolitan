@@ -5,10 +5,12 @@ import {getAllPaints} from '@/requests/paints';
 import {Input} from '@/components/ui/input';
 import {Filter, Loader2, Search} from 'lucide-react';
 import Image from '@/elements/Image';
+import TransitionLink from '@/Animation/TransitionLink';
 
 export default function Paints() {
   const [paintings, setPaintings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingDetails, setLoadingDetails] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedLocation, setSelectedLocation] = useState('all');
   const [selectedMovement, setSelectedMovement] = useState('all');
@@ -87,7 +89,7 @@ export default function Paints() {
   };
 
   const PaintingCard = ({painting}) => (
-    <a href={'/paints/' + painting.slug} className="group cursor-pointer">
+    <TransitionLink href={'/paints/' + painting.slug} className="group cursor-pointer">
       <div
         className="relative aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden mb-3">
         <div className="relative w-full h-full">
@@ -127,7 +129,7 @@ export default function Paints() {
           )}
         </div>
       </div>
-    </a>
+    </TransitionLink>
   );
 
   if (loading) {
