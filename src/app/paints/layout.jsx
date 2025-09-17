@@ -1,4 +1,5 @@
 import Header from '@/blocks/Header';
+import Footer from '@/blocks/Footer';
 
 export const metadata = {
   title: 'Peintures - Ophelia Museum',
@@ -10,6 +11,7 @@ export default function PaintsLayout({ children }) {
     <div>
       <Header />
       {children}
+      <Footer/>
     </div>
   );
 }
