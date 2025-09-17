@@ -2,7 +2,7 @@
 
 import {use, useEffect, useState} from 'react';
 import {getPaintBySlug} from '@/requests/paint';
-import {Loader2} from 'lucide-react';
+import {getSimilarPaints} from '@/requests/similarPaints';
 
 export default function PaintPage({params}) {
   const resolvedParams = use(params);
@@ -10,6 +10,7 @@ export default function PaintPage({params}) {
 
   const [paint, setPaint] = useState(null);
   const [error, setError] = useState('');
+  const [similarPaints, setSimilarPaints] = useState([]);
 
   useEffect(() => {
     if (!slug) return;
@@ -27,22 +28,36 @@ export default function PaintPage({params}) {
     fetchPaint();
   }, [slug]);
 
+  useEffect(() => {
+    if (!paint) {
+      console.log('No paint');
+      return;
+    }
+
+    async function fetchSimilarPaints() {
+      console.log('Entrée dans fetchSimilarPaints avec paint:', paint);
+      try {
+        const filteredData = await getSimilarPaints(paint.movement, slug);
+        setSimilarPaints(filteredData);
+      } catch (err) {
+        console.error('Erreur lors de la récupération des peintures similaires:', err);
+      }
+    }
+
+    fetchSimilarPaints();
+  }, [paint, slug]);
+
   if (error) return (
     <div
       className="flex flex-col items-center justify-center h-[60vh] text-red-500">
       {error}
     </div>
   );
-  if (!paint) return (
-    <div
-      className="flex flex-col items-center justify-center h-[60vh] text-gray-500">
-      <Loader2 className="animate-spin h-8 w-8 mb-4"/>
-      Chargement...
-    </div>
-  );
+
+  if (!paint) return null;
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+    <main className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
       {/* Banner */}
       <div className="relative h-72 md:h-96 w-full flex items-end">
         <img
@@ -97,6 +112,23 @@ export default function PaintPage({params}) {
           />
         )}
       </section>
+
+      {/* Section œuvres similaires */}
+      {similarPaints.length > 0 && (
+        <section className="max-w-3xl mx-auto px-4 py-10">
+          <h2 className="text-2xl font-bold mb-4">Œuvres similaires</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {similarPaints.map(similar => (
+              <div key={similar.slug} className="flex flex-col items-center">
+                <img src={similar.image} alt={similar.title}
+                     className="w-full h-32 object-cover mb-2"/>
+                <span className="font-semibold">{similar.title}</span>
+                <span className="text-sm text-gray-500">{similar.artist}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
     </main>
   );
 }

@@ -5,7 +5,7 @@ import {getAllPaints} from '@/requests/paints';
 import {Input} from '@/components/ui/input';
 import {Filter, Loader2, Search} from 'lucide-react';
 import Image from '@/elements/Image';
-import TransitionLink from '@/Animation/TransitionLink';
+import TransitionLink from '@/Animation/TransitionLinkGSAP';
 
 export default function Paints() {
   const [paintings, setPaintings] = useState([]);

@@ -3,6 +3,41 @@
 
 @custom-variant dark (&:is(.dark *));
 
+
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation: none !important;
+}
+
+::view-transition-group(root) {
+    z-index: auto !important;
+}
+
+::view-transition-image-pair(root) {
+    isolation: isolate;
+    will-change: clip-path;
+    z-index: 1;
+}
+
+::view-transition-new(root) {
+    z-index: 10000;
+    animation: none !important;
+}
+
+::view-transition-old(root) {
+    z-index: 1;
+    animation: none !important;
+}
+
+
+
+
+
+
+
+
+
+
 :root {
     --font-title: 'IM Fell French Canon', serif;
     --font-text: 'Raleway', sans-serif;
