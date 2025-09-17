@@ -4,7 +4,7 @@ import Footer from '@/blocks/Footer';
 
 export default function Home() {
   return (
-    <div>
+    <div className="bg-gray-50">
       <Header className="fixed"/>
       <Hero/>
       <Footer/>

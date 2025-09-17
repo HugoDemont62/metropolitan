@@ -17,7 +17,7 @@ export default function Hero() {
           <RevealText className="text-white text-7xl mb-8 text-center drop-shadow-lg">
             <h1>OPHELIA <i>Museum</i></h1>
           </RevealText>
-          <div className="flex gap-4 px-6 py-3 z-250 bg-opacity-70 text-white rounded-lg ">
+          <div className="flex gap-4 px-6 py-3 z-250 bg-opacity-70 text-white hover:text-[#7CA267] hover:scale-110 transition">
             <TransitionLink href="/paints">
               Voir les peintures
             </TransitionLink>
