@@ -1,6 +1,6 @@
 import RevealText from '@/Animation/RevealText';
 import Image from 'next/image';
-import TransitionLink from '@/Animation/TransitionLinkGSAP';
+import TransitionLink from '@/Animation/TransitionLink';
 
 export default function Hero() {
   return (

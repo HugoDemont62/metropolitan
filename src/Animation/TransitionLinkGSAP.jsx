@@ -1,45 +1,68 @@
-'use client'
+import { useRef } from 'react';
+      import { gsap } from 'gsap';
+      import { useTransitionRouter } from 'next-view-transitions';
+      import { usePathname } from 'next/navigation';
+      import Link from 'next/link';
 
-import { useTransitionRouter } from 'next-view-transitions'
-import { usePathname } from 'next/navigation'
-import Link from 'next/link'
-
-export default function TransitionLink({ children, href, className }) {
-  const router = useTransitionRouter()
-  const pathname = usePathname()
-
-  function _triggerPageTransition() {
-    document.documentElement.animate(
-      [
-        {
-          clipPath: 'polygon(25% 75%, 75% 75%, 75% 75%, 25% 75%)',
-        },
-        {
-          clipPath: 'polygon(0% 100%, 100% 100%, 100% 0%, 0% 0%)',
-        },
-      ],
-      {
-        duration: 2000,
-        easing: 'cubic-bezier(0.9, 0, 0.1, 1)',
-        pseudoElement: '::view-transition-new(root)',
+      function getWaveClipPath(progress) {
+        const amplitude = 10;
+        const points = [];
+        const steps = 8;
+        for (let i = 0; i <= steps; i++) {
+          const x = (i * 100) / steps;
+          const y =
+            100 -
+            amplitude *
+            Math.sin((Math.PI * i) / steps + progress * Math.PI * 2);
+          points.push(`${x}% ${y}%`);
+        }
+        points.push('100% 100%', '0% 100%');
+        return `polygon(${points.join(',')})`;
       }
-    )
-  }
 
-  const _handleNavigation = (path) => (e) => {
-    if (path === pathname) {
-      e.preventDefault()
-      return
-    }
+      export default function TransitionLinkGSAP({ children, href, className }) {
+        const router = useTransitionRouter();
+        const pathname = usePathname();
+        const overlayRef = useRef();
 
-    router.push(path, {
-      onTransitionReady: _triggerPageTransition,
-    })
-  }
+        function triggerWaveTransition(callback) {
+          gsap.fromTo(
+            overlayRef.current,
+            { clipPath: getWaveClipPath(0) },
+            {
+              clipPath: getWaveClipPath(1),
+              duration: 1.2,
+              ease: 'power2.inOut',
+              onComplete: callback,
+            }
+          );
+        }
 
-  return (
-    <Link onClick={_handleNavigation(href)} href={href}>
-      {children}
-    </Link>
-  )
-}
+        const handleNavigation = (path) => (e) => {
+          if (path === pathname) {
+            e.preventDefault();
+            return;
+          }
+          e.preventDefault();
+          triggerWaveTransition(() => router.push(path));
+        };
+
+        return (
+          <>
+            <div
+              ref={overlayRef}
+              style={{
+                position: 'fixed',
+                inset: 0,
+                background: '#fff',
+                pointerEvents: 'none',
+                zIndex: 9999,
+                clipPath: getWaveClipPath(0),
+              }}
+            />
+            <Link onClick={handleNavigation(href)} href={href} className={className}>
+              {children}
+            </Link>
+          </>
+        );
+      }

@@ -1,6 +1,6 @@
 import {Input} from '@/components/ui/input';
 import {Search} from 'lucide-react';
-import TransitionLink from '@/Animation/TransitionLinkGSAP';
+import TransitionLink from '@/Animation/TransitionLink';
 
 export default function Header() {
   return (
