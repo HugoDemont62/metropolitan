@@ -3,36 +3,58 @@ export async function getSimilarPaints(movement, excludeSlug) {
   const data = await response.json();
   const paints = data.objects;
 
-  // 1. Filtrer par mouvement
-  let filteredData = paints.filter(
-    p => p.movement === movement && p.slug !== excludeSlug,
-  );
+  const excludedPaint = paints.find(p => p.slug === excludeSlug);
+  if (!excludedPaint) return [];
 
-  // 2. Compléter par artistes du même mouvement
+  let filteredData = [];
+
+  // 1. Même artiste
+  const artistPaints = paints.filter(
+    p => p.artist === excludedPaint.artist && p.slug !== excludeSlug
+  );
+  filteredData.push(...artistPaints);
+
+  // 2. Même mouvement (hors artiste)
   if (filteredData.length < 4) {
     const missing = 4 - filteredData.length;
-    const artists = new Set(filteredData.map(p => p.artist));
-    const artistCandidates = paints.filter(
+    const movementPaints = paints.filter(
       p =>
-        p.movement === movement &&
+        p.movement === excludedPaint.movement &&
+        p.artist !== excludedPaint.artist &&
         p.slug !== excludeSlug &&
-        !artists.has(p.artist),
+        !filteredData.find(f => f.slug === p.slug)
     );
-    filteredData.push(...artistCandidates.slice(0, missing));
+    filteredData.push(...movementPaints.slice(0, missing));
   }
 
-  // 3. Compléter par date proche
+  // 3. Même type (aléatoire)
   if (filteredData.length < 4) {
     const missing = 4 - filteredData.length;
-    const refYear = filteredData[0]?.date || 0;
-    const dateCandidates = paints.filter(
+    const typePaints = paints.filter(
+      p =>
+        p.type === excludedPaint.type &&
+        p.slug !== excludeSlug &&
+        !filteredData.find(f => f.slug === p.slug)
+    );
+    // Mélange aléatoirement
+    for (let i = typePaints.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [typePaints[i], typePaints[j]] = [typePaints[j], typePaints[i]];
+    }
+    filteredData.push(...typePaints.slice(0, missing));
+  }
+
+  // 4. Par date proche
+  if (filteredData.length < 4) {
+    const missing = 4 - filteredData.length;
+    const datePaints = paints.filter(
       p =>
         p.slug !== excludeSlug &&
         !filteredData.find(f => f.slug === p.slug) &&
-        Math.abs((p.date || 0) - refYear) <= 50,
+        Math.abs((p.date || 0) - excludedPaint.date) <= 50
     );
-    filteredData.push(...dateCandidates.slice(0, missing));
+    filteredData.push(...datePaints.slice(0, missing));
   }
 
-  return filteredData.slice(0, 5);
+  return filteredData.slice(0, 4);
 }
