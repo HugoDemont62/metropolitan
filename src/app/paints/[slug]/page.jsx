@@ -3,6 +3,7 @@
 import {use, useEffect, useState} from 'react';
 import {getPaintBySlug} from '@/requests/paint';
 import {getSimilarPaints} from '@/requests/similarPaints';
+import TransitionLink from '@/Animation/TransitionLink';
 
 export default function PaintPage({params}) {
   const resolvedParams = use(params);
@@ -119,12 +120,15 @@ export default function PaintPage({params}) {
           <h2 className="text-2xl font-bold mb-4">Œuvres similaires</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {similarPaints.map(similar => (
+              <TransitionLink key={similar.slug} href={`/paints/${similar.slug}`}>
               <div key={similar.slug} className="flex flex-col items-center">
                 <img src={similar.image} alt={similar.title}
                      className="w-full h-32 object-cover mb-2"/>
                 <span className="font-semibold">{similar.title}</span>
                 <span className="text-sm text-gray-500">{similar.artist}</span>
               </div>
+              </TransitionLink>
+
             ))}
           </div>
         </section>
