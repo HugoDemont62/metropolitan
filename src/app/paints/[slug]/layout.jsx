@@ -1,5 +1,10 @@
 import { getPaintBySlug } from '@/requests/paint';
 
+
+function stripHtml(html) { // Fonction pour enlever les balises HTML
+  return html?.replace(/<[^>]+>/g, '').trim() || '';
+}
+
 export async function generateMetadata({ params }) {
   const paint = await getPaintBySlug(params.slug);
   if (!paint) {
@@ -10,7 +15,7 @@ export async function generateMetadata({ params }) {
   }
   return {
     title: `${paint.title} - Ophelia Museum`,
-    description: paint.description || 'Découvrez cette œuvre au musée Ophelia.',
+    description: stripHtml(paint.description) || 'Découvrez cette œuvre au musée Ophelia.',
   };
 }
 export default function PaintLayout({ children }) {

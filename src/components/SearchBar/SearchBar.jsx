@@ -59,16 +59,18 @@ export default function SearchBar({onSelect}) {
           className="absolute left-0 top-10 w-full bg-white border rounded shadow z-10">
           {loading && <li className="p-2 text-gray-400">Chargement...</li>}
           {!loading && results.map(paint => (
-            <li
-              key={paint.slug}
-              className="p-2 hover:bg-gray-100 cursor-pointer"
-              onClick={() => onSelect?.(paint)}
-            >
-              <TransitionLink href={`/paints/${paint.slug}`}
-                              className="block w-full">
+            <TransitionLink href={`/paints/${paint.slug}`}
+                            className="block w-full">
+              <li
+                key={paint.slug}
+                className="p-2 hover:bg-gray-100 cursor-pointer"
+                onClick={() => onSelect?.(paint)}
+              >
+
                 {paint.title}
-              </TransitionLink>
-            </li>
+
+              </li>
+            </TransitionLink>
           ))}
           {!loading && results.length === 0 && (
             <li className="p-2 text-gray-400">Aucune œuvre trouvée</li>
