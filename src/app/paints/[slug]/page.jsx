@@ -5,9 +5,8 @@ import {getPaintBySlug} from '@/requests/paint';
 import {getSimilarPaints} from '@/requests/similarPaints';
 import TransitionLink from '@/Animation/TransitionLink';
 
-export default function PaintPage({params}) {
-  const resolvedParams = use(params);
-  const {slug} = resolvedParams;
+export default function PaintPage({ params }) {
+  const { slug } = use(params);
 
   const [paint, setPaint] = useState(null);
   const [error, setError] = useState('');
@@ -30,30 +29,42 @@ export default function PaintPage({params}) {
   }, [slug]);
 
   useEffect(() => {
-    if (!paint) {
-      console.log('No paint');
-      return;
-    }
+    if (!paint) return;
 
     async function fetchSimilarPaints() {
-      console.log('Entrée dans fetchSimilarPaints avec paint:', paint);
       try {
         const filteredData = await getSimilarPaints(paint.movement, slug);
         setSimilarPaints(filteredData);
       } catch (err) {
-        console.error('Erreur lors de la récupération des peintures similaires:', err);
+        console.error(
+          'Erreur lors de la récupération des peintures similaires:', err);
       }
     }
 
     fetchSimilarPaints();
   }, [paint, slug]);
 
-  if (error) return (
-    <div
-      className="flex flex-col items-center justify-center h-[60vh] text-red-500">
-      {error}
-    </div>
-  );
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[60vh] bg-gradient-to-br from-red-100 via-white to-gray-50">
+        <div className="mb-4">
+          {/* Icône d’erreur */}
+          <svg width="56" height="56" fill="none" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" fill="#fee2e2"/>
+            <path d="M12 8v4m0 4h.01" stroke="#b91c1c" strokeWidth="2" strokeLinecap="round"/>
+          </svg>
+        </div>
+        <p className="text-2xl font-bold text-red-700 mb-2 text-center drop-shadow">
+          {error}
+        </p>
+        <TransitionLink href="/">
+          <button className="mt-4 px-6 py-3  text-black hover:text-gray-500 delay-75 transition font-semibold">
+            Retour à l’accueil
+          </button>
+        </TransitionLink>
+      </div>
+    );
+  }
 
   if (!paint) return null;
 
@@ -128,7 +139,6 @@ export default function PaintPage({params}) {
                 <span className="text-sm text-gray-500">{similar.artist}</span>
               </div>
               </TransitionLink>
-
             ))}
           </div>
         </section>
