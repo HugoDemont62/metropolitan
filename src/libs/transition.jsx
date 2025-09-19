@@ -133,11 +133,8 @@ export default function Transition({children}) {
       <main>{children}</main>
       <div
         ref={transitionRef}
-        className={`fixed inset-0 bg-gradient-to-br backdrop-blur-md  z-[9999] pointer-events-none ${!visible
-          ? 'hidden'
-          : ''}`}
+        className={`fixed inset-0 bg-gradient-to-br bg-black  z-[9999] pointer-events-none`}
         style={{
-          background: 'rgba(0, 0, 0, 0.3)',
           clipPath: getWaveClipPath(0, 'up'),
           visibility: visible ? 'visible' : 'hidden',
         }}

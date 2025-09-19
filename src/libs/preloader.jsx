@@ -21,8 +21,8 @@ export default function Preloader({children}) {
   const fontFamily = fonts[fontIndex];
 
   // Style dynamique
-  const isBold = count % 80 === 0;
-  const isItalic = count % 80 < 10;
+  const isBold = count % 40 === 0;
+  const isItalic = count % 40 < 10;
   const fontWeight = isBold ? '900' : '400';
   const fontStyle = isItalic ? 'italic' : 'normal';
 
@@ -33,7 +33,7 @@ export default function Preloader({children}) {
       let counter = {val: 0};
       gsap.to(counter, {
         val: 100,
-        duration: 5,
+        duration: 4,
         ease: 'power1.inOut',
         onUpdate: () => setCount(Math.floor(counter.val)), // Met à jour le pourcentage
         onComplete: () => {
