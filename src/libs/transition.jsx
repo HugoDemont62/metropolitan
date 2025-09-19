@@ -12,7 +12,7 @@ export default function Transition({children}) {
   const transitionRef = useRef();
   const pathname = usePathname();
   const router = useRouter();
-  const {
+  const { // recupération des états globaux
     isTransitionActive,
     setIsTransitionActive,
     isFirstLoad,
@@ -23,10 +23,10 @@ export default function Transition({children}) {
   const [visible, setVisible] = useState(false);
 
   const getWaveClipPath = (progress, direction = 'up') => {
-    const amplitude = 15;
+    const amplitude = 5;
     const frequency = 2;
     const points = [];
-    const steps = 20;
+    const steps = 100;
 
     for (let i = 0; i <= steps; i++) {
       const x = (i * 100) / steps;
@@ -77,6 +77,7 @@ export default function Transition({children}) {
         const progress = this.progress();
         gsap.set(transitionRef.current, {
           clipPath: getWaveClipPath(progress, 'up'),
+          visibility: 'visible',
         });
       },
     });
@@ -128,15 +129,15 @@ export default function Transition({children}) {
   return (
     <>
       <main>{children}</main>
-      {visible && (
-        <div
-          ref={transitionRef}
-          className="fixed inset-0 bg-gradient-to-br bg-black z-[9999] pointer-events-none"
-          style={{
-            clipPath: getWaveClipPath(0, 'up')
-          }}
-        />
-      )}
+      <div
+        ref={transitionRef}
+        className={`fixed inset-0 bg-gradient-to-br backdrop-blur-md  z-[9999] pointer-events-none ${!visible ? 'hidden' : ''}`}
+        style={{
+          background: 'rgba(0, 0, 0, 0.3)',
+          clipPath: getWaveClipPath(0, 'up'),
+          visibility: visible ? 'visible' : 'hidden'
+        }}
+      />
     </>
   );
 }

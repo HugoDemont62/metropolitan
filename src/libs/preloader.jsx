@@ -21,25 +21,21 @@ export default function Preloader({children}) {
   const fontFamily = fonts[fontIndex];
 
   // Style dynamique
-  const isBold = count % 40 === 0;
-  const isItalic = count % 40 < 10;
+  const isBold = count % 80 === 0;
+  const isItalic = count % 80 < 10;
   const fontWeight = isBold ? '900' : '400';
   const fontStyle = isItalic ? 'italic' : 'normal';
 
   useGSAP(() => {
-    if (isFirstLoad) {
-      gsap.set(preloaderRef.current, {clipPath: 'inset(0%)'});
-      gsap.fromTo(
-        logoRef.current,
-        {scale: 0.5, opacity: 0},
-        {scale: 1, opacity: 1, duration: 0.8, ease: 'power2.out'},
-      );
+    if (isFirstLoad) { // Si c'est le premier chargement
+      gsap.set(preloaderRef.current, {clipPath: 'inset(0%)'}); // Assure que le preloader est visible
+
       let counter = {val: 0};
       gsap.to(counter, {
         val: 100,
-        duration: 4,
+        duration: 5,
         ease: 'power1.inOut',
-        onUpdate: () => setCount(Math.floor(counter.val)),
+        onUpdate: () => setCount(Math.floor(counter.val)), // Met à jour le pourcentage
         onComplete: () => {
           gsap.to(preloaderRef.current, {
             clipPath: 'inset(100%)',
