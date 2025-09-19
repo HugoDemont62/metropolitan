@@ -21,8 +21,8 @@ export default function Preloader({children}) {
   const fontFamily = fonts[fontIndex];
 
   // Style dynamique
-  const isBold = count % 2 === 0;
-  const isItalic = count % 20 < 10;
+  const isBold = count % 40 === 0;
+  const isItalic = count % 40 < 10;
   const fontWeight = isBold ? '900' : '400';
   const fontStyle = isItalic ? 'italic' : 'normal';
 
@@ -37,13 +37,13 @@ export default function Preloader({children}) {
       let counter = {val: 0};
       gsap.to(counter, {
         val: 100,
-        duration: 2,
+        duration: 4,
         ease: 'power1.inOut',
         onUpdate: () => setCount(Math.floor(counter.val)),
         onComplete: () => {
           gsap.to(preloaderRef.current, {
             clipPath: 'inset(100%)',
-            duration: 0.8,
+            duration: 0.5,
             ease: 'power2.inOut',
             onComplete: () => {
               if (isFirstLoad) setIsFirstLoad(false);
@@ -56,26 +56,28 @@ export default function Preloader({children}) {
 
   return (
     <>
-      <main>{children}</main>
+      { !isFirstLoad && <main>{children}</main> }
       <div
         ref={preloaderRef}
-        className="pointer-events-none fixed inset-0 z-50 bg-white flex items-center justify-center">
-        <span
-          ref={logoRef}
-          className="font-title text-[8rem] text-black"
-          style={{
-            fontFamily,
-            fontWeight,
-            fontStyle,
-          }}
-        >
-          Ophelia
-        </span>
+        className="pointer-events-none fixed inset-0 z-50 bg-white flex items-center justify-center"
+        style={{ display: isFirstLoad ? 'flex' : 'none' }}
+      >
+      <span
+        ref={logoRef}
+        className="font-title text-[8rem] text-black"
+        style={{
+          fontFamily,
+          fontWeight,
+          fontStyle,
+        }}
+      >
+        Ophelia
+      </span>
         <span
           className="absolute right-8 bottom-8 text-3xl text-back"
         >
-          {count}%
-        </span>
+        {count}%
+      </span>
       </div>
     </>
   );
