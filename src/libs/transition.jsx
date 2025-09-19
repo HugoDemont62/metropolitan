@@ -23,35 +23,36 @@ export default function Transition({children}) {
   const [visible, setVisible] = useState(false);
 
   const getWaveClipPath = (progress, direction = 'up') => {
-    const amplitude = 5;
-    const frequency = 2;
-    const points = [];
-    const steps = 100;
+    const amplitude = 5;    // Hauteur de la vague
+    const frequency = 2;    // Nombre d'oscillations
+    const points = [];      // Points du polygone
+    const steps = 100;      // Précision de la vague, 100 pour avoir quelque chose de fluide
 
     for (let i = 0; i <= steps; i++) {
-      const x = (i * 100) / steps;
+      const x = (i * 100) / steps; // Position horizontale sur l'écran en %
       let y;
 
       if (direction === 'up') {
-        // Vague qui monte du bas vers le haut
+        // La base monte selon le progress, la sinusoïde ajoute l'effet de vague
         y = 100 - (progress * 100) + amplitude *
           Math.sin((Math.PI * i * frequency) / steps + progress * Math.PI * 4);
-      } else {
-        // Vague qui descend du haut vers le bas
+      } else if (direction === 'down') {
         y = (progress * 100) + amplitude *
           Math.sin((Math.PI * i * frequency) / steps + progress * Math.PI * 4);
       }
 
-      y = Math.max(0, Math.min(100, y));
+      y = Math.max(0, Math.min(100, y)); // Y max entre 0 et 100 (max de l'écran)
       points.push(`${x}% ${y}%`);
     }
 
+    // Ferme le polygone selon la direction
     if (direction === 'up') {
       points.push('100% 100%', '0% 100%');
     } else {
       points.push('100% 0%', '0% 0%');
     }
 
+    // Retourne la chaîne CSS du polygone
     return `polygon(${points.join(', ')})`;
   };
 
@@ -131,11 +132,13 @@ export default function Transition({children}) {
       <main>{children}</main>
       <div
         ref={transitionRef}
-        className={`fixed inset-0 bg-gradient-to-br backdrop-blur-md  z-[9999] pointer-events-none ${!visible ? 'hidden' : ''}`}
+        className={`fixed inset-0 bg-gradient-to-br backdrop-blur-md  z-[9999] pointer-events-none ${!visible
+          ? 'hidden'
+          : ''}`}
         style={{
           background: 'rgba(0, 0, 0, 0.3)',
           clipPath: getWaveClipPath(0, 'up'),
-          visibility: visible ? 'visible' : 'hidden'
+          visibility: visible ? 'visible' : 'hidden',
         }}
       />
     </>
