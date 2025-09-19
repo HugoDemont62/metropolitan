@@ -63,7 +63,6 @@ export default function Transition({children}) {
     });
 
     const tl = gsap.timeline({
-      delay : 0.3,
       onComplete: () => {
         // Navigation vers la nouvelle page après l'animation
         if (pageToGoTo && !isFirstLoad) {
@@ -73,7 +72,7 @@ export default function Transition({children}) {
     });
 
     tl.to(transitionRef.current, {
-      duration: 1,
+      duration: 1.3,
       ease: 'power2.inOut',
       onUpdate: function() {
         const progress = this.progress();
@@ -93,7 +92,6 @@ export default function Transition({children}) {
     });
 
     const tl = gsap.timeline({
-      delay: 0.3,
       onComplete: () => {
         setIsFirstLoad(false);
         setIsTransitionActive(false);
@@ -103,7 +101,7 @@ export default function Transition({children}) {
     });
 
     tl.to(transitionRef.current, {
-      duration: 1,
+      duration: 1.3,
       ease: 'power2.inOut',
       onUpdate: function() {
         const progress = 1 - this.progress(); // Inverser le progress pour descendre
