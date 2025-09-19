@@ -2,15 +2,13 @@
 
 import TransitionLink from '@/Animation/TransitionLink';
 import SearchBar from '@/components/SearchBar/SearchBar';
+import Logo from '@/components/Logo/Logo';
 
 export default function Header() {
   return (
-    <header className="w-full py-4 px-6 flex items-center justify-between">
+    <header className="w-full py-4 px-6 flex items-center justify-between gap-6">
       {/* Logo */}
-      <TransitionLink href="/" className="font-serif leading-none ">
-        <h1 className="text-2xl tracking-wider mb-[-10px]">OPHELIA</h1>
-        <h2 className="text-xl tracking-wide"><i>Museum</i></h2>
-      </TransitionLink>
+      <Logo />
 
       {/* Navigation */}
       <nav className="flex space-x-6 text-sm font-medium">

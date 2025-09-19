@@ -11,7 +11,7 @@ export default function PaintsLayout({ children }) {
     <div>
       <Header />
       {children}
-      <Footer/>
+      <Footer backgroundColor="#f5e9d7" textColor="#2a1a0a" />
     </div>
   );
 }
