@@ -1,3 +1,4 @@
+
 'use client'
 
 import {useRef} from 'react'
@@ -7,23 +8,29 @@ import {useStore} from '@/libs/store'
 
 export default function TransitionLink({children, href, className, refProp, onClickEvent}) {
   const defaultRef = useRef()
-  const {isTransitionActive, setIsTransitionActive} = useStore()
+  const {isTransitionActive, setIsTransitionActive, setPageToGoTo} = useStore()
   const router = useRouter()
   const pathname = usePathname()
+
+  const handleClick = (e) => {
+    e.preventDefault()
+
+    // Vérifications de base
+    if (pathname === href) return
+    if (isTransitionActive) return
+
+    // Exécuter l'événement personnalisé si fourni
+    onClickEvent && onClickEvent()
+
+    // Stocker la page de destination et démarrer la transition
+    setPageToGoTo(href)
+    setIsTransitionActive(true)
+  }
 
   return (
     <Link
       ref={refProp ?? defaultRef}
-      onClick={(e) => {
-        e.preventDefault()
-        if (pathname === href) return
-        if (isTransitionActive) return
-        setIsTransitionActive(true)
-        onClickEvent && onClickEvent()
-        setTimeout(() => {
-          router.push(href)
-        }, 400)
-      }}
+      onClick={handleClick}
       href={href}
       className={className}
     >
